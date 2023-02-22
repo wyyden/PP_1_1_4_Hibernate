@@ -27,13 +27,15 @@ public class Util {
             System.out.println("Connection established");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Connection error!!!");
-           e.printStackTrace();
+            e.printStackTrace();
         }
         return connection;
 
     }
-    public static SessionFactory getSessionFactory(){
-        SessionFactory sessionFactory = null;
+
+    private static SessionFactory sessionFactory = null;
+
+    public static SessionFactory getSessionFactory() {
         try {
             Properties prop = new Properties();
             prop.setProperty("hibernate.connection.driver_class", DRIVER);
@@ -46,10 +48,17 @@ public class Util {
             config.setProperties(prop);
             config.addAnnotatedClass(User.class);
             sessionFactory = config.buildSessionFactory();
-        } catch (Throwable  e) {
+        } catch (Throwable e) {
             System.out.println("Connection error!!!");
             e.printStackTrace();
         }
         return sessionFactory;
     }
+
+    public static void closeSessionFactory() {
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
+    }
+
 }
